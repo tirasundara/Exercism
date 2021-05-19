@@ -1,32 +1,20 @@
 package wordcount
 
 import (
+	"regexp"
 	"strings"
-	"unicode"
 )
 
 // Frequency is type map[string]int that stores word count
 type Frequency map[string]int
 
 // WordCount calculates word count in a sentence
-func WordCount(s string) Frequency {
+func WordCount(phrase string) Frequency {
 	f := make(Frequency)
 
-	fieldFunc := func(r rune) bool {
-		return unicode.IsSpace(r) || (r != '\'' && unicode.IsPunct(r)) || unicode.IsSymbol(r)
+	re := regexp.MustCompile(`\w+('\w)*`)
+	for _, word := range re.FindAllString(strings.ToLower(phrase), -1) {
+		f[word]++
 	}
-	words := strings.FieldsFunc(s, fieldFunc)
-	trimFunc := func(r rune) bool {
-		return !unicode.IsLetter(r) && !unicode.IsNumber(r)
-	}
-	for _, word := range words {
-		trimmed := strings.ToLower(strings.TrimFunc(word, trimFunc))
-		if _, found := f[trimmed]; !found {
-			f[trimmed] = 1
-		} else {
-			f[trimmed]++
-		}
-	}
-
 	return f
 }
