@@ -10,11 +10,7 @@ func Square(n int) (uint64, error) {
 		return 0, errors.New("out of range")
 	}
 
-	if n == 1 {
-		return 1, nil
-	}
-
-	return uint64(2 << (n - 2)), nil
+	return (1 << (n - 1)), nil
 }
 
 // Total returns sum of the Square(n). Where n from 1 to 64
