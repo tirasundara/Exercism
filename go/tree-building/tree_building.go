@@ -1,7 +1,7 @@
 package tree
 
 import (
-	"errors"
+	"fmt"
 	"sort"
 )
 
@@ -29,7 +29,7 @@ func Build(records []Record) (*Node, error) {
 
 	for i, record := range records {
 		if i != record.ID || record.Parent > record.ID || record.ID > 0 && record.Parent == record.ID {
-			return nil, errors.New("Invalid record")
+			return nil, fmt.Errorf("Invalid record: %v", record)
 		}
 
 		node[record.ID] = &Node{ID: record.ID}
